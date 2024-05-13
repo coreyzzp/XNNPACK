@@ -24,7 +24,11 @@ __m128i _mm_loadu_si32(const void* address) {
 }
 
 static XNN_INTRINSIC
+#if defined(__GNUC__) && (__GNUC__ == 11)
+void _mm_storeu_si32(void* address, __m128i v) {
+#else
 void _mm_storeu_si32(const void* address, __m128i v) {
+#endif
   *((int*) address) = _mm_cvtsi128_si32(v);
 }
 #endif  // GCC any, Clang pre-8, Android NDK Clang pre-8.0.7, Apple Clang pre-11, and ICC pre-16
